@@ -1,93 +1,129 @@
 <?php
 /*
- * @desc 		Engine Web v1.0 - IFR Web Dev
- * @date		29/11/2021 ;;
- * @author		Wilfried Metais
- */
+//connexion serveur
+$servername = "reun_eat";
+$port = "3307";
+$username = "root";
+$password = "";
 
-// Préparation du moteur PHP
-require 'inc/framework.php';
-$html_wrap = true;
+// Create connection
+$conn = mysqli_connect($servername, $port, $username, $password);
 
-ini_set('session.gc_maxlifetime', 7200);
+// Check connection
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+echo "Connected successfully";
+*/
 
-// Utilise l'encodage interne UTF-8
-ini_set('default_charset', 'utf-8');
-mb_internal_encoding("UTF-8");
+class data {
+    private static $_instance = null;
+    private $link = null;
+    private $DATABASE = 'reun_eat';     //
+    private $SERVEUR = '127.0.0.1';          // 127.0.0.1
+    private $PORT = '3307';
+    private $USER = 'root';                     //
+    private $PASS = '';                     //
+    private $die_message_serveur = 'Erreur Serveur';
+    private $die_message_bdd = 'Erreur BDD';
+    private $data = null;
 
-// Gestion d'affichage des erreurs
-@error_reporting(E_ALL ^ E_DEPRECATED);
-if(isset($_GET['e_all'])) ini_set( 'display_errors' , TRUE  );
+    private function __construct(){
+        // Connexion Serveur
+        $this->link = mysqli_connect($this->SERVEUR, $this->PORT,  $this->USER,  $this->PASS) or die($this->die_message_serveur);
 
-// Chargement de la session
-session_name(SITE_NAME);
-session_start();
+        // Connexion BDD
+        mysqli_select_db($this->link, $this->DATABASE) or die($this->die_message_bdd);
 
-$isHome = false;
-
-// Traitement si utilisateur connecté
-if (!empty($_GET['to']) && isset($page[$_GET['to']])) {
-    $url_php = $page[$_GET['to']];
-    $isHome = true;
-} else {
-    if (is_file('is_close')) {
-        $url_php = $page['close'];
-    } else {
-        $url_php = $page['home'];
-        $isHome = true;
+        // Gestion Encodage
+        $sql="SET CHARACTER SET 'utf8mb4';";
+        mysqli_query($this->link, $sql);
+        $sql="SET collation_connection = 'utf8mb4_general_ci';";
+        mysqli_query($this->link, $sql);
     }
+    
 }
-
-// Verification si presence de fichier fonction (_func) pour le module
-$url_php_func=str_replace('.php','_func.php',$url_php);
-if(is_file($url_php_func)){
-    include $url_php_func;
-}
-
-$url_php_header=str_replace('.php','_header.php',$url_php);
-if(is_file($url_php_header)){
-    include $url_php_header;
-}
-
-if($html_wrap){
 ?>
+
 <!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="UTF-8">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Style CSS -->
-        <link rel="stylesheet" type="text/css" href="css/common.css"/>
-        <link rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
+    <!-- Inclusion des CSS -->
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
 
-        <!-- Inclusion Police TTF -->
-        <link href='http://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
 
-        <!-- Moteur JS / jQuery -->
-        <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui.js"></script>
-        <script type="text/javascript" src="js/jquery.ajax.js"></script>
-        <script type="text/javascript" src="js/common.js"></script>
-        <script type="text/javascript" src="js/autoload.js"></script>
+    <title>Document</title>
+</head>
 
-        <?php
-            // Gestion des inclusions automatiques (head)
-            // 'mod/home/home.php' ==> 'mod/home/home_head.php'
-            $url_php_head = str_replace('.php', '_head.php', $url_php);
-            // Exemple pour le home => home_head.php
-            if (is_file($url_php_head)) {
-                include $url_php_head;
-            } else {
-                echo '<title>Formation Web Developpeur - Moteur PHP Fullstack</title>';
-            }
-        ?>
-    </head>
-    <?php
-        } // Fin du test if($html_wrap)
-        require $url_php;
-        if($html_wrap){
-    ?>
+<header>
+ <!--header -->
+    <div class="header">
+        <div class="title">
+            <img src=""/>
+            Reun'Eat
+        </div>
+        <!--todo menu hamburger -->
+        <section class="top-nav">
+            <input id="menu-toggle" type="checkbox" />
+                <label class='menu-button-container' for="menu-toggle">
+                    <div class='menu-button'></div>
+                </label>
+                <ul class="menu">
+                    <li>One</li>
+                    <li>Two</li>
+                    <li>Three</li>
+                    <li>Four</li>
+                    <li>Five</li>
+                </ul>
+                    </div>
+         </section>
+</header>
+
+<body>
+    <h1>Bienvenu Anon/user</h1>
+    <div class="content">
+        <div class="en_avant">
+            <!--todo défilement d'image + texte pour les mise en avant -->
+            <div class="produit_avant" >
+                <!--image en fond en fontion du produit-->
+                <div class="nom_plat">
+
+            </div>
+            <div class="note">
+                <!--image en fond depend de la note associé au plat aroudi en dessous if x=-.49 au dessus if x=.5 -->
+                <div class="n1">
+                </div>
+                <div class="n2">
+                </div>
+                <div class="n3">
+                </div>
+                <div class="n4">
+                </div>
+                <div class="n5">
+                </div>
+            </div>
+            <div class="moyenne">
+                Moyenne total = x/5
+            </div>
+            <div class="description">
+                Velit minim irure nulla labore aliqua id cupidatat id esse labore excepteur do magna sunt. Sit nostrud cillum veniam proident incididunt Lorem eiusmod. Nulla mollit consectetur occaecat nisi deserunt ipsum ea do tempor. Laborum cupidatat aute eiusmod esse proident tempor id cillum sunt Lorem mollit laborum exercitation. Magna id Lorem dolore aliqua voluptate minim anim. Cupidatat sit veniam veniam anim laborum Lorem mollit occaecat pariatur nisi cupidatat exercitation voluptate. Irure culpa do ipsum voluptate qui veniam.
+            </div>
+
+            </div>
+            
+        </div>
+
+        <div class="type_cuisine">
+            <!--todo tableau bouton type de cuisine -->
+        </div>  
+        <!--footer -->
+        <div class="footer">
+
+        </div>
+    </div>
+</body>
 </html>
-<?php
-        }
-?>
