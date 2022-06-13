@@ -66,6 +66,7 @@ class data {
             <img src=""/>
             Reun'Eat
         </div>
+
         <!--todo menu hamburger -->
         <section class="top-nav">
             <input id="menu-toggle" type="checkbox" />
@@ -81,6 +82,7 @@ class data {
                 </ul>
                     </div>
          </section>
+         
 </header>
 
 <body>
