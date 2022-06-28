@@ -1,21 +1,44 @@
 <?php
-/*
+
+ini_set('session.gc_maxlifetime', 7200);
+
+// Utilise l'encodage interne UTF-8
+ini_set('default_charset', 'utf-8');
+mb_internal_encoding("UTF-8");
+
+// Chargement de la session
+session_name("SITE_NAME");
+session_start();
+
+
+// Traitement si utilisateur connecté
+if (!empty($_GET['to']) && isset($page[$_GET['to']])) {
+    $url_php = $page[$_GET['to']];
+    $isHome = true;
+} else {
+    if (is_file('is_close')) {
+    } else {
+        $isHome = true;
+    }
+}
+
+
 //connexion serveur
-$servername = "reun_eat";
-$port = "3307";
+$servername = "localhost: 3307";
 $username = "root";
 $password = "";
 
 // Create connection
-$conn = mysqli_connect($servername, $port, $username, $password);
+$conn =new mysqli($servername, $username, $password);
 
 // Check connection
 if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
-echo "Connected successfully";
-*/
+//echo "Connected successfully";
 
+
+/*
 class data {
     private static $_instance = null;
     private $link = null;
@@ -43,6 +66,202 @@ class data {
     }
     
 }
+*/
+
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+$mysqli = new mysqli($servername, $username, $password, "reun_eat");
+
+
+//request mysql
+    //request plat
+//$bdd_plat = $mysqli->query("SELECT * FROM t_plat WHERE avant="1"");
+$query_plat = 'SELECT * FROM t_plat WHERE avant="1"';
+$bdd_plat = mysqli_query($mysqli, $query_plat);
+$info_p= mysqli_fetch_assoc($bdd_plat);
+while($info_plat= mysqli_fetch_array($bdd_plat)){
+    foreach($info_plat as $key => $value){
+        //echo $key . ' => ' . $value;
+        //echo "</br>";
+    }
+    //echo ($info_p['id']);
+        //request commentaire
+            //moyenne
+    $query_comm_m = 'SELECT AVG(note) AS moyenne FROM t_commentaire WHERE fk_plat = '.$info_p['id'];
+    
+}
+echo $info_p['id'];
+    $bdd_comm_m = mysqli_query($mysqli, $query_comm_m);
+    $info_comm_m= mysqli_fetch_assoc($bdd_comm_m);
+    while ($info_m = mysqli_fetch_array($bdd_comm_m)){
+        foreach($info_m as $key => $value){
+            echo $key . ' => ' . $value;
+            echo "</br>";
+        }
+        echo $info_comm_m['moyenne'];
+    }
+
+
+
+
+
+//création note
+if($info_comm_m['moyenne']==5){
+    $html_star= "
+                    <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                    </div>
+                    <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                    </div>
+                    <div class='n3' style='background-image: url(images/interface/full_star.png);'>
+                    </div>
+                    <div class='n4' style='background-image: url(images/interface/full_star.png);'>
+                    </div>
+                    <div class='n5' style='background-image: url(images/interface/full_star.png);'>
+                    </div>
+                ";
+}
+    elseif($info_comm_m['moyenne']>=4.4){
+        $html_star= "
+                        <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                        </div>
+                        <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                        </div>
+                        <div class='n3' style='background-image: url(images/interface/full_star.png);'>
+                        </div>
+                        <div class='n4' style='background-image: url(images/interface/full_star.png);'>
+                        </div>
+                        <div class='n5' style='background-image: url(images/interface/half_star.png);'>
+                        </div>
+                    ";
+    }
+        elseif($info_comm_m['moyenne']>=4){
+            $html_star= "
+                            <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                            </div>
+                            <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                            </div>
+                            <div class='n3' style='background-image: url(images/interface/full_star.png);'>
+                            </div>
+                            <div class='n4' style='background-image: url(images/interface/full_star.png);'>
+                            </div>
+                            <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                            </div>
+                        ";
+        }
+            elseif($info_comm_m['moyenne']>=3.4){
+                $html_star= "
+                                <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                </div>
+                                <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                                </div>
+                                <div class='n3' style='background-image: url(images/interface/full_star.png);'>
+                                </div>
+                                <div class='n4' style='background-image: url(images/interface/half_star.png);'>
+                                </div>
+                                <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                </div>
+                            ";
+            }
+                elseif($info_comm_m['moyenne']>=3){
+                    $html_star= "
+                                    <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                    </div>
+                                    <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                                    </div>
+                                    <div class='n3' style='background-image: url(images/interface/full_star.png);'>
+                                    </div>
+                                    <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                    </div>
+                                    <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                    </div>
+                                ";
+                }
+                    elseif($info_comm_m['moyenne']>=2.4){
+                        $html_star= "
+                                        <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                        </div>
+                                        <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                                        </div>
+                                        <div class='n3' style='background-image: url(images/interface/half_star.png);'>
+                                        </div>
+                                        <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                        </div>
+                                        <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                        </div>
+                                    ";
+                    }
+                        elseif($info_comm_m['moyenne']>=2){
+                            $html_star= "
+                                            <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                            </div>
+                                            <div class='n2' style='background-image: url(images/interface/full_star.png);'>
+                                            </div>
+                                            <div class='n3' style='background-image: url(images/interface/empty_star.png);'>
+                                            </div>
+                                            <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                            </div>
+                                            <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                            </div>
+                                        ";
+                        }
+                            elseif($info_comm_m['moyenne']>=1.4){
+                                $html_star= "
+                                                <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                                </div>
+                                                <div class='n2' style='background-image: url(images/interface/half_star.png);'>
+                                                </div>
+                                                <div class='n3' style='background-image: url(images/interface/empty_star.png);'>
+                                                </div>
+                                                <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                                </div>
+                                                <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                                </div>
+                                            ";
+                            }
+                                elseif($info_comm_m['moyenne']>=1){
+                                    $html_star= "
+                                                    <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                                    </div>
+                                                    <div class='n2' style='background-image: url(images/interface/empty_star.png);'>
+                                                    </div>
+                                                    <div class='n3' style='background-image: url(images/interface/empty_star.png);'>
+                                                    </div>
+                                                    <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                                    </div>
+                                                    <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                                    </div>
+                                                ";
+                                }
+                                    elseif($info_comm_m['moyenne']>=0.4){
+                                        $html_star= "
+                                                        <div class='n1' style='background-image: url(images/interface/full_star.png);'>
+                                                        </div>
+                                                        <div class='n2' style='background-image: url(images/interface/half_star.png);'>
+                                                        </div>
+                                                        <div class='n3' style='background-image: url(images/interface/empty_star.png);'>
+                                                        </div>
+                                                        <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                                        </div>
+                                                        <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                                        </div>
+                                                    ";
+                                    }
+                                        else($info_comm_m['moyenne']>=0){
+                                            $html_star= "
+                                                            <div class='n1' style='background-image: url(images/interface/empty_star.png);'>
+                                                            </div>
+                                                            <div class='n2' style='background-image: url(images/interface/empty_star.png);'>
+                                                            </div>
+                                                            <div class='n3' style='background-image: url(images/interface/empty_star.png);'>
+                                                            </div>
+                                                            <div class='n4' style='background-image: url(images/interface/empty_star.png);'>
+                                                            </div>
+                                                            <div class='n5' style='background-image: url(images/interface/empty_star.png);'>
+                                                            </div>
+                                                        "
+                                        };
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +275,7 @@ class data {
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
 
 
-    <title>Document</title>
+    <title> Document</title>
 </head>
 
 <header>
@@ -67,60 +286,92 @@ class data {
             Reun'Eat
         </div>
 
-        <!--todo menu hamburger -->
-        <section class="top-nav">
+        <!--menu hamburger -->
+        
             <input id="menu-toggle" type="checkbox" />
                 <label class='menu-button-container' for="menu-toggle">
-                    <div class='menu-button'></div>
+                    <div class='menu-button'>
+                    </div>
                 </label>
                 <ul class="menu">
-                    <li>One</li>
-                    <li>Two</li>
-                    <li>Three</li>
-                    <li>Four</li>
-                    <li>Five</li>
+                    <li>loggin</li>
+                    <li>recherche</li>
+                    <li><?php echo($info_comm_m['moyenne']) ?></li>
                 </ul>
-                    </div>
-         </section>
+    </div>
+        
          
 </header>
 
 <body>
-    <h1>Bienvenu Anon/user</h1>
+    <div class="page_title">
+        <h1>Bienvenu Anon/user</h1>
+    </div>
     <div class="content">
         <div class="en_avant">
             <!--todo défilement d'image + texte pour les mise en avant -->
-            <div class="produit_avant" >
+            <div class="produit_avant" style="background-image: url('images/plats/<?php echo($info_p["photo_plat"]) ?>');" >
                 <!--image en fond en fontion du produit-->
-                <div class="nom_plat">
+                <div class="fleche">
+                    <div class="fleche_g" style="background-image: url('images/interface/fleche_g.png');">
+                    </div>
+                </div>
+                <a href="mod/plat.php">
+                    <div class="plat">
+                        <div class="nom_plat">
+                            <?php echo($info_plat["nom_plat"]) ?>
+                        </div>
+                        
+                    <div class="v">
+                    </div>
 
-            </div>
-            <div class="note">
-                <!--image en fond depend de la note associé au plat aroudi en dessous if x=-.49 au dessus if x=.5 -->
-                <div class="n1">
-                </div>
-                <div class="n2">
-                </div>
-                <div class="n3">
-                </div>
-                <div class="n4">
-                </div>
-                <div class="n5">
-                </div>
-            </div>
-            <div class="moyenne">
-                Moyenne total = x/5
-            </div>
-            <div class="description">
-                Velit minim irure nulla labore aliqua id cupidatat id esse labore excepteur do magna sunt. Sit nostrud cillum veniam proident incididunt Lorem eiusmod. Nulla mollit consectetur occaecat nisi deserunt ipsum ea do tempor. Laborum cupidatat aute eiusmod esse proident tempor id cillum sunt Lorem mollit laborum exercitation. Magna id Lorem dolore aliqua voluptate minim anim. Cupidatat sit veniam veniam anim laborum Lorem mollit occaecat pariatur nisi cupidatat exercitation voluptate. Irure culpa do ipsum voluptate qui veniam.
-            </div>
+                    <div class="nc">
+                        <div class="note">
+                            <!--note réaliser avec le php > création note -->
+                            <?php echo $html_star?>
 
+                        </div>
+                    </div>
+                    
+                    <div class="mc">
+                        <div class="moyenne">
+                            Moyenne total = <?php echo $info_comm_m['moyenne']?>/5
+                        </div>
+                    </div>
+
+                    <div class="dc">
+                        <div class="description">
+                            <?php echo($info_p["description_plat"]) ?>
+                        </div>
+                    </div>
+
+                    </div>
+                </a>
             </div>
-            
+            <div class="fleche">
+                <div class="fleche_d"style="background-image: url('images/interface/fleche_d.png');">
+                </div>
+            </div>
         </div>
+            
+    </div>
 
         <div class="type_cuisine">
             <!--todo tableau bouton type de cuisine -->
+            <div class="tc_l1">
+                <div class="tc_btn" style="background-image: url('images/interface/chinois.png');">
+                </div>
+                <div class="tc_btn" style="background-image: url('images/interface/japonais.png');">
+                </div>
+                <div class="tc_btn" style="background-image: url('images/interface/fast_food.png');">
+                </div>
+            </div>
+            <div class="tc_l2">
+                <div class="tc_btn"style="background-image: url('images/interface/dessert.png');">
+                </div>
+                <div class="tc_btn"style="background-image: url('images/interface/mexicain.png');">
+                </div>
+            </div>
         </div>  
         <!--footer -->
         <div class="footer">
