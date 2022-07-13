@@ -78,7 +78,7 @@ if($html_wrap){
             if (is_file($url_php_head)) {
                 include $url_php_head;
             } else {
-                echo '<title>Formation Web Developpeur - Moteur PHP Fullstack</title>';
+                echo '<title>Reun\'Eat</title>';
             }
         ?>
     </head>

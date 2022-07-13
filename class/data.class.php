@@ -11,10 +11,10 @@
 class data {
     private static $_instance = null;
     private $link = null;
-    private $DATABASE = 'ifr_web_dev_fullstack_0822';     //
-    private $SERVEUR = '192.168.56.3';          // 127.0.0.1
+    private $DATABASE = 'reun_eat';     //
+    private $SERVEUR = 'localhost: 3307';          // 127.0.0.1
     private $USER = 'root';                     //
-    private $PASS = 'root';                     //
+    private $PASS = '';                     //
     private $die_message_serveur = 'Erreur Serveur';
     private $die_message_bdd = 'Erreur BDD';
     private $data = null;
